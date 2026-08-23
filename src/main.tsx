@@ -28,7 +28,7 @@ function City() {
     <>
       <ambientLight intensity={0.35} />
       <directionalLight position={[10, 18, 8]} intensity={2.2} castShadow />
-      <pointLight position={[0, 12, 0]} intensity={40} color="#00ffc8" distance={30} />
+      <pointLight position={[0, 12, 0]} intensity={40} color="#00e5ff" distance={30} />
 
       <group>
         {towers.map((tower, i) => (
@@ -38,17 +38,17 @@ function City() {
 
       <mesh position={[0, 0.03, 1]} receiveShadow>
         <boxGeometry args={[10, 0.06, 16]} />
-        <meshStandardMaterial color="#07180f" roughness={0.95} />
+        <meshStandardMaterial color="#06141d" roughness={0.95} />
       </mesh>
 
       <Float speed={1.2} rotationIntensity={0.08} floatIntensity={0.4}>
         <mesh position={[0, 12, 0]}>
           <cylinderGeometry args={[1.1, 1.8, 22, 8]} />
-          <meshStandardMaterial color="#090d16" emissive="#00ffc8" emissiveIntensity={0.55} metalness={0.85} roughness={0.2} />
+          <meshStandardMaterial color="#090d16" emissive="#00e5ff" emissiveIntensity={0.55} metalness={0.85} roughness={0.2} />
         </mesh>
       </Float>
 
-      <Grid args={[80, 80]} position={[0, -0.01, 0]} cellSize={1} cellThickness={0.4} sectionSize={10} sectionThickness={1} fadeDistance={45} infiniteGrid />
+      <Grid args={[80, 80]} position={[0, -0.01, 0]} cellSize={1} cellThickness={0.4} cellColor="#12313a" sectionSize={10} sectionThickness={1} sectionColor="#00e5ff" fadeDistance={45} infiniteGrid />
       <Environment preset="night" />
       <OrbitControls makeDefault minDistance={12} maxDistance={65} maxPolarAngle={Math.PI / 2.05} target={[0, 5, 0]} />
     </>
@@ -76,7 +76,7 @@ function App() {
         <div className="legend">
           <b>FOUNDATION SCENE</b>
           <span>Procedural skyline</span>
-          <span>Central green commons</span>
+          <span>Central cyan commons</span>
           <span>Axis landmark</span>
           <span>Orbit camera</span>
         </div>
