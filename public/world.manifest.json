@@ -1,23 +1,128 @@
 {
   "world": "AGENTROPOLIS",
-  "version": 1,
+  "version": 2,
+  "spatialRuntimeContract": "agentropolis.spatial-runtime.v1",
+  "worldStateAuthority": "AGENTROPOLIS Intelligence Grid",
+  "fabricationAuthority": "CREATOR / Construction District",
+  "surface": "AGENTROPOLIS-WORLD",
+  "rendererRole": "surface-only",
   "rendering": {
     "mode": "procedural-first",
-    "camera": ["cinematic-arrival", "scroll-scrub", "free-roam"],
-    "fallback": "webgl"
+    "camera": ["city", "district", "diorama", "mission", "scroll-scrub", "free-roam"],
+    "fallback": "webgl",
+    "doctrine": {
+      "rendererIsTruth": false,
+      "dioramaIsSecondSimulation": false
+    }
   },
   "districts": [
-    { "id": "axis", "name": "Axis / Mission Control", "density": 1.0, "greenSpace": 0.08, "activity": 0.95 },
-    { "id": "residential", "name": "Residential", "density": 0.78, "greenSpace": 0.24, "activity": 0.66 },
-    { "id": "green-commons", "name": "Central Green Commons", "density": 0.05, "greenSpace": 0.92, "activity": 0.52 },
-    { "id": "research", "name": "Research Campus", "density": 0.72, "greenSpace": 0.2, "activity": 0.74 },
-    { "id": "engineering", "name": "Engineering District", "density": 0.84, "greenSpace": 0.1, "activity": 0.83 },
-    { "id": "finance", "name": "Finance District", "density": 0.93, "greenSpace": 0.07, "activity": 0.81 },
-    { "id": "commerce", "name": "Commerce District", "density": 0.88, "greenSpace": 0.12, "activity": 0.79 },
-    { "id": "entertainment", "name": "Entertainment District", "density": 0.76, "greenSpace": 0.15, "activity": 0.88 },
-    { "id": "gaming", "name": "Gaming District", "density": 0.71, "greenSpace": 0.18, "activity": 0.85 },
-    { "id": "creator", "name": "Creator District", "density": 0.73, "greenSpace": 0.2, "activity": 0.82 },
-    { "id": "sports", "name": "Sports District", "density": 0.54, "greenSpace": 0.31, "activity": 0.73 },
-    { "id": "hermes-city", "name": "HERMES CITY", "density": 0.86, "greenSpace": 0.14, "activity": 0.9 }
+    {
+      "id": "axis",
+      "name": "Axis / Mission Control",
+      "density": 1.0,
+      "greenSpace": 0.08,
+      "activity": 0.95,
+      "parcel": { "x": 0, "z": 0, "width": 9, "depth": 9 },
+      "massing": { "buildingCount": 18, "minHeight": 8, "maxHeight": 25, "landmark": true }
+    },
+    {
+      "id": "green-commons",
+      "name": "Central Green Commons",
+      "density": 0.05,
+      "greenSpace": 0.92,
+      "activity": 0.52,
+      "parcel": { "x": 0, "z": 15, "width": 16, "depth": 10 },
+      "massing": { "buildingCount": 2, "minHeight": 1, "maxHeight": 3, "landmark": false }
+    },
+    {
+      "id": "creator",
+      "name": "Creator / Construction District",
+      "density": 0.73,
+      "greenSpace": 0.2,
+      "activity": 0.82,
+      "parcel": { "x": -14, "z": 2, "width": 10, "depth": 10 },
+      "massing": { "buildingCount": 12, "minHeight": 4, "maxHeight": 15, "landmark": true }
+    },
+    {
+      "id": "gaming",
+      "name": "Gaming District",
+      "density": 0.71,
+      "greenSpace": 0.18,
+      "activity": 0.85,
+      "parcel": { "x": 14, "z": 2, "width": 10, "depth": 10 },
+      "massing": { "buildingCount": 12, "minHeight": 4, "maxHeight": 14, "landmark": true }
+    },
+    {
+      "id": "research",
+      "name": "Research Campus",
+      "density": 0.72,
+      "greenSpace": 0.2,
+      "activity": 0.74,
+      "parcel": { "x": -13, "z": 15, "width": 9, "depth": 9 },
+      "massing": { "buildingCount": 10, "minHeight": 3, "maxHeight": 12, "landmark": false }
+    },
+    {
+      "id": "engineering",
+      "name": "Engineering District",
+      "density": 0.84,
+      "greenSpace": 0.1,
+      "activity": 0.83,
+      "parcel": { "x": 13, "z": 15, "width": 9, "depth": 9 },
+      "massing": { "buildingCount": 14, "minHeight": 4, "maxHeight": 17, "landmark": false }
+    },
+    {
+      "id": "finance",
+      "name": "Finance District",
+      "density": 0.93,
+      "greenSpace": 0.07,
+      "activity": 0.81,
+      "parcel": { "x": -14, "z": -12, "width": 10, "depth": 10 },
+      "massing": { "buildingCount": 16, "minHeight": 6, "maxHeight": 20, "landmark": true }
+    },
+    {
+      "id": "commerce",
+      "name": "Commerce District",
+      "density": 0.88,
+      "greenSpace": 0.12,
+      "activity": 0.79,
+      "parcel": { "x": 14, "z": -12, "width": 10, "depth": 10 },
+      "massing": { "buildingCount": 15, "minHeight": 5, "maxHeight": 18, "landmark": false }
+    },
+    {
+      "id": "entertainment",
+      "name": "Entertainment District",
+      "density": 0.76,
+      "greenSpace": 0.15,
+      "activity": 0.88,
+      "parcel": { "x": -1, "z": -14, "width": 11, "depth": 9 },
+      "massing": { "buildingCount": 13, "minHeight": 4, "maxHeight": 16, "landmark": true }
+    },
+    {
+      "id": "sports",
+      "name": "Sports District",
+      "density": 0.54,
+      "greenSpace": 0.31,
+      "activity": 0.73,
+      "parcel": { "x": -26, "z": 0, "width": 9, "depth": 14 },
+      "massing": { "buildingCount": 7, "minHeight": 2, "maxHeight": 9, "landmark": true }
+    },
+    {
+      "id": "residential",
+      "name": "Residential",
+      "density": 0.78,
+      "greenSpace": 0.24,
+      "activity": 0.66,
+      "parcel": { "x": 26, "z": 0, "width": 12, "depth": 18 },
+      "massing": { "buildingCount": 15, "minHeight": 3, "maxHeight": 13, "landmark": false }
+    },
+    {
+      "id": "hermes-city",
+      "name": "HERMES CITY",
+      "density": 0.86,
+      "greenSpace": 0.14,
+      "activity": 0.9,
+      "parcel": { "x": 0, "z": 29, "width": 12, "depth": 9 },
+      "massing": { "buildingCount": 15, "minHeight": 5, "maxHeight": 19, "landmark": true }
+    }
   ]
 }
