@@ -37,6 +37,18 @@ jobs:
           VITE_BASE_PATH: /AGENTROPOLIS-WORLD/
         run: npm run build
 
+      - name: Activate Agentropolis spatial runtime
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('dist/index.html')
+          s = p.read_text()
+          tag = '<script src="./spatial-runtime.js" defer></script>'
+          if tag not in s:
+              s = s.replace('</head>', f'{tag}</head>')
+              p.write_text(s)
+          PY
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
