@@ -1,0 +1,23 @@
+{
+  "world": "AGENTROPOLIS",
+  "version": 1,
+  "rendering": {
+    "mode": "procedural-first",
+    "camera": ["cinematic-arrival", "scroll-scrub", "free-roam"],
+    "fallback": "webgl"
+  },
+  "districts": [
+    { "id": "axis", "name": "Axis / Mission Control", "density": 1.0, "greenSpace": 0.08, "activity": 0.95 },
+    { "id": "residential", "name": "Residential", "density": 0.78, "greenSpace": 0.24, "activity": 0.66 },
+    { "id": "green-commons", "name": "Central Green Commons", "density": 0.05, "greenSpace": 0.92, "activity": 0.52 },
+    { "id": "research", "name": "Research Campus", "density": 0.72, "greenSpace": 0.2, "activity": 0.74 },
+    { "id": "engineering", "name": "Engineering District", "density": 0.84, "greenSpace": 0.1, "activity": 0.83 },
+    { "id": "finance", "name": "Finance District", "density": 0.93, "greenSpace": 0.07, "activity": 0.81 },
+    { "id": "commerce", "name": "Commerce District", "density": 0.88, "greenSpace": 0.12, "activity": 0.79 },
+    { "id": "entertainment", "name": "Entertainment District", "density": 0.76, "greenSpace": 0.15, "activity": 0.88 },
+    { "id": "gaming", "name": "Gaming District", "density": 0.71, "greenSpace": 0.18, "activity": 0.85 },
+    { "id": "creator", "name": "Creator District", "density": 0.73, "greenSpace": 0.2, "activity": 0.82 },
+    { "id": "sports", "name": "Sports District", "density": 0.54, "greenSpace": 0.31, "activity": 0.73 },
+    { "id": "hermes-city", "name": "HERMES CITY", "density": 0.86, "greenSpace": 0.14, "activity": 0.9 }
+  ]
+}

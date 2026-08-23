@@ -1,0 +1,14 @@
+html, body, #root { margin: 0; width: 100%; min-height: 100%; background: #020306; color: #eefcff; font-family: Inter, ui-sans-serif, system-ui, sans-serif; }
+* { box-sizing: border-box; }
+body { overflow: hidden; }
+.app-shell { min-height: 100vh; background: radial-gradient(circle at 50% 0%, rgba(0,255,200,.08), transparent 35%), #020306; }
+.hud { position: fixed; z-index: 10; left: 0; right: 0; top: 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; padding: 22px 28px; pointer-events: none; background: linear-gradient(180deg, rgba(2,3,6,.92), rgba(2,3,6,.18), transparent); }
+.hud h1 { margin: 4px 0 0; font-size: clamp(38px, 6vw, 86px); line-height: .82; letter-spacing: .08em; }
+.hud p { margin: 8px 0 0; color: #86a2b6; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+.eyebrow { color: #00ffc8; font-size: 10px; letter-spacing: .22em; }
+.status { margin-top: 6px; border: 1px solid rgba(0,255,200,.4); border-radius: 999px; padding: 9px 12px; color: #00ffc8; font-size: 10px; letter-spacing: .14em; background: rgba(0,15,18,.58); }
+.viewport { position: fixed; inset: 0; }
+.viewport canvas { width: 100% !important; height: 100% !important; }
+.legend { position: fixed; right: 22px; bottom: 22px; z-index: 10; display: grid; gap: 5px; min-width: 210px; padding: 14px; border: 1px solid rgba(255,49,88,.32); border-radius: 14px; background: rgba(3,6,12,.72); backdrop-filter: blur(14px); color: #8fa9b8; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; pointer-events: none; }
+.legend b { color: #ff3158; margin-bottom: 4px; }
+@media (max-width: 720px) { .hud { padding: 16px; } .status { display: none; } .legend { left: 16px; right: 16px; bottom: 16px; min-width: 0; } }
