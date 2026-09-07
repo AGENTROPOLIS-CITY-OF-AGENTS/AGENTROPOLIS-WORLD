@@ -17,6 +17,7 @@ The world should feel like a real metropolis rather than a dashboard:
 - roads, rail, skyways, data corridors, and transit systems
 - cinematic arrival cameras and scroll-scrub storytelling
 - free-roam exploration
+- Repository District, where each governed repository becomes an explorable operational building
 - live visual state driven by public Agentropolis manifests
 - thermodynamic / entropy / drift signals expressed spatially rather than as decorative fake telemetry
 
@@ -52,6 +53,10 @@ AGENTROPOLIS-WORLD does **not** own authority. It visualizes and interacts with 
 ## Core Rule
 
 **Do not hand-model the whole city.** Most urban massing should be generated from manifests. Hero landmarks and lore-critical spaces can use bespoke assets.
+
+## Repository District
+
+Repository District maps repositories across `AGENTROPOLIS-CITY-OF-AGENTS` and `WIREDCHAOS` into buildings with governed operational interiors. See [the Repository District contract](docs/repository-district.md).
 
 ## License
 
