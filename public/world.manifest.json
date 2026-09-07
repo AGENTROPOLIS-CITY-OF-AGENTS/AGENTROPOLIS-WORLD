@@ -1,6 +1,6 @@
 {
   "world": "AGENTROPOLIS",
-  "version": 2,
+  "version": 3,
   "spatialRuntimeContract": "agentropolis.spatial-runtime.v1",
   "worldStateAuthority": "AGENTROPOLIS Intelligence Grid",
   "fabricationAuthority": "CREATOR / Construction District",
@@ -69,6 +69,32 @@
       "activity": 0.83,
       "parcel": { "x": 13, "z": 15, "width": 9, "depth": 9 },
       "massing": { "buildingCount": 14, "minHeight": 4, "maxHeight": 17, "landmark": false }
+    },
+    {
+      "id": "repository",
+      "name": "Repository District",
+      "purpose": "The governed spatial index for repositories across AGENTROPOLIS-CITY-OF-AGENTS and WIREDCHAOS.",
+      "buildingRepresents": "one repository",
+      "interior": [
+        "active agents and mandates",
+        "branches, issues and pull requests",
+        "CI, deployments and security state",
+        "dependencies, architecture and receipts"
+      ],
+      "density": 0.91,
+      "greenSpace": 0.09,
+      "activity": 0.92,
+      "parcel": { "x": 26, "z": 20, "width": 13, "depth": 14 },
+      "massing": { "buildingCount": 24, "minHeight": 4, "maxHeight": 22, "landmark": true },
+      "authority": {
+        "mode": "read-only-by-default",
+        "mutationCorridor": "Identity -> Mandate -> AEGIS -> Tool Permission -> Execution -> Receipt -> Sentinel-6 Audit",
+        "visualInteractionGrantsAuthority": false
+      },
+      "sources": [
+        "AGENTROPOLIS-CITY-OF-AGENTS",
+        "WIREDCHAOS"
+      ]
     },
     {
       "id": "finance",
