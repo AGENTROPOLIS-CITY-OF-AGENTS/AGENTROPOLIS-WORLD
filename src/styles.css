@@ -20,4 +20,7 @@ button, select { font: inherit; }
 .doctrine { display: grid; gap: 5px; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.08); }
 .doctrine b { color: #eefcff; margin-bottom: 2px; }
 .doctrine span { color: #7895a8; line-height: 1.35; }
+.doctrine .purpose { color: #00e5ff; }
+.interior-list { margin: 4px 0; padding-left: 18px; color: #b7ced8; line-height: 1.45; }
+.interior-list li::marker { color: #ff3158; }
 @media (max-width: 720px) { .hud { padding: 16px; } .status { display: none; } .hud p { max-width: 70vw; } .world-controls { left: 16px; right: 16px; bottom: 16px; width: auto; } }
