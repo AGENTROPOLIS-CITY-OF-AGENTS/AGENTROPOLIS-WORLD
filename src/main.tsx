@@ -9,6 +9,9 @@ type Massing = { buildingCount: number; minHeight: number; maxHeight: number; la
 type District = {
   id: string;
   name: string;
+  purpose?: string;
+  buildingRepresents?: string;
+  interior?: string[];
   density: number;
   greenSpace: number;
   activity: number;
@@ -124,7 +127,7 @@ function WorldScene({ manifest, selectedId, mode }: { manifest: WorldManifest; s
 
 function App() {
   const [manifest, setManifest] = useState<WorldManifest | null>(null);
-  const [selectedId, setSelectedId] = useState<string | null>("axis");
+  const [selectedId, setSelectedId] = useState<string | null>("repository");
   const [mode, setMode] = useState<ViewMode>("city");
 
   useEffect(() => {
@@ -179,6 +182,13 @@ function App() {
           </label>
           <div className="doctrine">
             <b>{selected?.name ?? "CITY"}</b>
+            {selected?.purpose ? <span className="purpose">{selected.purpose}</span> : null}
+            {selected?.buildingRepresents ? <span>Buildings represent {selected.buildingRepresents}.</span> : null}
+            {selected?.interior?.length ? (
+              <ul className="interior-list">
+                {selected.interior.map((item) => <li key={item}>{item}</li>)}
+              </ul>
+            ) : null}
             <span>Ontology defines what exists.</span>
             <span>CREATOR / Construction compiles spatial form.</span>
             <span>Renderer displays; it does not own truth.</span>
