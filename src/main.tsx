@@ -12,6 +12,8 @@ type District = {
   purpose?: string;
   buildingRepresents?: string;
   interior?: string[];
+  operatorAgent?: string;
+  maintenanceLoop?: string;
   density: number;
   greenSpace: number;
   activity: number;
@@ -183,6 +185,14 @@ function App() {
           <div className="doctrine">
             <b>{selected?.name ?? "CITY"}</b>
             {selected?.purpose ? <span className="purpose">{selected.purpose}</span> : null}
+            {selected?.operatorAgent ? (
+              <div className="agent-status">
+                <span className="status-dot" />
+                <span>{selected.operatorAgent}</span>
+                <small>CONTRACT REGISTERED · LIVE STATUS UNVERIFIED</small>
+              </div>
+            ) : null}
+            {selected?.maintenanceLoop ? <span>Maintenance loop: {selected.maintenanceLoop}</span> : null}
             {selected?.buildingRepresents ? <span>Buildings represent {selected.buildingRepresents}.</span> : null}
             {selected?.interior?.length ? (
               <ul className="interior-list">
