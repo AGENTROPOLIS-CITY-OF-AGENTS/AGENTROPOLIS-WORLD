@@ -75,6 +75,8 @@
       "name": "Repository District",
       "purpose": "The governed spatial index for repositories across AGENTROPOLIS-CITY-OF-AGENTS and WIREDCHAOS.",
       "buildingRepresents": "one repository",
+      "operatorAgent": "Repo Architect Agent",
+      "maintenanceLoop": "Repo Guardian Loop",
       "interior": [
         "active agents and mandates",
         "branches, issues and pull requests",
