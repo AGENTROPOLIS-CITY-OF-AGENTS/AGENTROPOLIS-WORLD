@@ -1,6 +1,6 @@
 {
   "world": "AGENTROPOLIS",
-  "version": 3,
+  "version": 4,
   "spatialRuntimeContract": "agentropolis.spatial-runtime.v1",
   "worldStateAuthority": "AGENTROPOLIS Intelligence Grid",
   "fabricationAuthority": "CREATOR / Construction District",
@@ -15,6 +15,17 @@
       "dioramaIsSecondSimulation": false
     }
   },
+  "systemIdentities": [
+    {
+      "id": "red-fang",
+      "name": "DJ RED FANG",
+      "homeDistrict": "district-33",
+      "scope": "systemwide",
+      "network": "33.3FM",
+      "personaRegistry": "AGENTROPOLIS-DISTRICT-33.3/packages/stations/red-fang-personas.json",
+      "rule": "One canonical identity with bounded chain-specific persona overlays; district placement never limits systemwide presence."
+    }
+  ],
   "districts": [
     {
       "id": "axis",
@@ -53,6 +64,20 @@
       "massing": { "buildingCount": 12, "minHeight": 4, "maxHeight": 14, "landmark": true }
     },
     {
+      "id": "district-33",
+      "name": "AGENTROPOLIS-DISTRICT-33",
+      "purpose": "Home anchor for DJ RED FANG and the 33.3FM omnichain broadcast network. RED FANG remains systemwide and is never confined to this parcel.",
+      "operatorAgent": "DJ RED FANG",
+      "network": "33.3FM",
+      "personaModel": "one canonical identity + chain overlays",
+      "chainPersonas": ["33.3FM DOGECHAIN", "33.3FM SOLCHAIN", "33.3FM ETHCHAIN", "33.3FM HOODCHAIN"],
+      "density": 0.8,
+      "greenSpace": 0.11,
+      "activity": 0.94,
+      "parcel": { "x": -1, "z": -27, "width": 12, "depth": 9 },
+      "massing": { "buildingCount": 13, "minHeight": 4, "maxHeight": 18, "landmark": true }
+    },
+    {
       "id": "research",
       "name": "Research Campus",
       "density": 0.72,
@@ -77,12 +102,7 @@
       "buildingRepresents": "one repository",
       "operatorAgent": "Repo Architect Agent",
       "maintenanceLoop": "Repo Guardian Loop",
-      "interior": [
-        "active agents and mandates",
-        "branches, issues and pull requests",
-        "CI, deployments and security state",
-        "dependencies, architecture and receipts"
-      ],
+      "interior": ["active agents and mandates", "branches, issues and pull requests", "CI, deployments and security state", "dependencies, architecture and receipts"],
       "density": 0.91,
       "greenSpace": 0.09,
       "activity": 0.92,
@@ -93,10 +113,7 @@
         "mutationCorridor": "Identity -> Mandate -> AEGIS -> Tool Permission -> Execution -> Receipt -> Sentinel-6 Audit",
         "visualInteractionGrantsAuthority": false
       },
-      "sources": [
-        "AGENTROPOLIS-CITY-OF-AGENTS",
-        "WIREDCHAOS"
-      ]
+      "sources": ["AGENTROPOLIS-CITY-OF-AGENTS", "WIREDCHAOS"]
     },
     {
       "id": "finance",
@@ -122,7 +139,7 @@
       "density": 0.76,
       "greenSpace": 0.15,
       "activity": 0.88,
-      "parcel": { "x": -1, "z": -14, "width": 11, "depth": 9 },
+      "parcel": { "x": -14, "z": -25, "width": 10, "depth": 9 },
       "massing": { "buildingCount": 13, "minHeight": 4, "maxHeight": 16, "landmark": true }
     },
     {
