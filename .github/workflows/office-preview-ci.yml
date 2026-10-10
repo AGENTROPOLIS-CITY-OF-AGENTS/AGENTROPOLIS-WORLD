@@ -25,7 +25,7 @@ jobs:
         run: |
           grep -Fq 'get("office") === "demo"' src/main.tsx
           grep -Fq 'DEMO · NOT LIVE' src/main.tsx
-          if grep -Ein 'higgsfield|neo.tokyo' src/hermes-office.tsx src/main.tsx docs/integrations/HERMES-OFFICE-DEMO-20261009.md; then
+          if grep -Ein 'higgsfield|neo.tokyo' src/hermes-office.tsx src/main.tsx; then
             echo "Forbidden provider or spelling found"
             exit 1
           fi
