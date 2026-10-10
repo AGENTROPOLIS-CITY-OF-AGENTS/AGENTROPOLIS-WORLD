@@ -48,3 +48,18 @@ button, select { font: inherit; }
 .agent-status span { color: #eefcff; }
 .agent-status small { grid-column: 2; color: var(--wc-amber); font-size: 9px; line-height: 1.35; }
 @media (max-width: 720px) { .hud { padding: 16px; } .status { display: none; } .hud p { max-width: 70vw; } .world-controls { left: 16px; right: 16px; bottom: 16px; width: auto; } }
+
+
+/* HERMES OFFICE DEMO: independent from operational runtime. */
+.office-entry { display: grid; gap: 9px; margin-top: 13px; padding: 11px; border: 1px solid rgba(25,230,230,.3); border-radius: 10px; background: rgba(3,12,20,.7); text-transform: none; }
+.office-entry button { min-height: 42px; border: 1px solid #19e6e6; border-radius: 7px; background: rgba(25,230,230,.08); color: #d9ffff; cursor: pointer; font-size: 12px; }
+.office-entry button:focus-visible { outline: 2px solid #b6ff4a; outline-offset: 3px; }
+.office-entry label { color: #19e6e6; font-size: 10px; letter-spacing: .1em; }
+.office-entry input[type=range] { width: 100%; accent-color: #19e6e6; }
+.office-entry strong { color: #f0fbff; font-size: 11px; }
+.office-entry small { color: #ffc46a; font-size: 10px; line-height: 1.45; }
+.office-entry code { font-family: ui-monospace, monospace; }
+.office-entry span { color: #92bac9; font-size: 11px; }
+.office-inspector { display: grid; gap: 5px; padding: 9px; border: 1px solid rgba(182,255,74,.3); border-radius: 8px; }
+.office-inspector b { font-size: 11px; color: #b6ff4a; }
+@media(max-width:720px) { .office-entry { gap: 10px; } .office-entry button { min-height: 46px; } }
