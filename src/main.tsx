@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { Canvas } from "@react-three/fiber";
 import { Environment, Grid, OrbitControls } from "@react-three/drei";
 import "./styles.css";
+import { HermesOffice, OFFICE_DEMO, type OfficeAgent } from "./hermes-office";
 
 type Parcel = { x: number; z: number; width: number; depth: number };
 type Massing = { buildingCount: number; minHeight: number; maxHeight: number; landmark: boolean };
@@ -85,9 +86,9 @@ function DistrictMesh({ district, focused }: { district: District; focused: bool
   );
 }
 
-function WorldScene({ manifest, selectedId, mode }: { manifest: WorldManifest; selectedId: string | null; mode: ViewMode }) {
+function WorldScene({ manifest, selectedId, mode, officeOpen, officeStep, selectedAgentId, onAgentSelect }: { manifest: WorldManifest; selectedId: string | null; mode: ViewMode; officeOpen: boolean; officeStep: number; selectedAgentId: string | null; onAgentSelect: (agent: OfficeAgent) => void }) {
   const selected = manifest.districts.find((d) => d.id === selectedId) ?? null;
-  const target: [number, number, number] = selected ? [selected.parcel.x, 4, selected.parcel.z] : [0, 5, 5];
+  const target: [number, number, number] = officeOpen ? [0, 1, 0] : selected ? [selected.parcel.x, 4, selected.parcel.z] : [0, 5, 5];
 
   return (
     <>
@@ -95,15 +96,19 @@ function WorldScene({ manifest, selectedId, mode }: { manifest: WorldManifest; s
       <directionalLight position={[18, 26, 12]} intensity={2.4} castShadow />
       <pointLight position={[0, 18, 0]} intensity={55} color="#00e5ff" distance={42} />
 
-      <group>
-        {manifest.districts.map((district) => {
-          const focused = selected?.id === district.id;
-          const hiddenByLens = mode === "diorama" && selected && !focused;
-          return hiddenByLens ? null : <DistrictMesh key={district.id} district={district} focused={focused} />;
-        })}
-      </group>
+      {officeOpen ? (
+        <HermesOffice step={officeStep} selectedId={selectedAgentId} onSelect={onAgentSelect} />
+      ) : (
+        <group>
+          {manifest.districts.map((district) => {
+            const focused = selected?.id === district.id;
+            const hiddenByLens = mode === "diorama" && selected && !focused;
+            return hiddenByLens ? null : <DistrictMesh key={district.id} district={district} focused={focused} />;
+          })}
+        </group>
+      )}
 
-      <Grid
+      {!officeOpen ? <Grid
         args={[120, 120]}
         position={[0, -0.01, 0]}
         cellSize={1}
@@ -114,12 +119,12 @@ function WorldScene({ manifest, selectedId, mode }: { manifest: WorldManifest; s
         sectionColor="#00e5ff"
         fadeDistance={75}
         infiniteGrid
-      />
+      /> : null}
       <Environment preset="night" />
       <OrbitControls
         makeDefault
-        minDistance={mode === "diorama" ? 6 : 12}
-        maxDistance={mode === "diorama" ? 30 : 95}
+        minDistance={officeOpen ? 9 : mode === "diorama" ? 6 : 12}
+        maxDistance={officeOpen ? 32 : mode === "diorama" ? 30 : 95}
         maxPolarAngle={Math.PI / 2.04}
         target={target}
       />
@@ -128,9 +133,14 @@ function WorldScene({ manifest, selectedId, mode }: { manifest: WorldManifest; s
 }
 
 function App() {
+  // Explicit URL opt-in enables a LOCAL/STATIC DEMO only, never any privileged runtime.
+  const demoOptIn = new URLSearchParams(window.location.search).get("office") === "demo";
   const [manifest, setManifest] = useState<WorldManifest | null>(null);
-  const [selectedId, setSelectedId] = useState<string | null>("repository");
+  const [selectedId, setSelectedId] = useState<string | null>(demoOptIn ? "hermes-city" : "repository");
   const [mode, setMode] = useState<ViewMode>("city");
+  const [officeOpen, setOfficeOpen] = useState(demoOptIn);
+  const [officeStep, setOfficeStep] = useState(0);
+  const [inspectedAgent, setInspectedAgent] = useState<OfficeAgent | null>(null);
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}world.manifest.json`, { cache: "no-store" })
@@ -152,15 +162,15 @@ function App() {
           <h1>WORLD</h1>
           <p>Manifest-driven spatial plane · CREATOR / Construction compiled · renderer surface only</p>
         </div>
-        <div className="status">SPATIAL RUNTIME V1 · MANIFEST DRIVEN</div>
+        <div className="status">{officeOpen ? "HERMES OFFICE · DEMO · NOT LIVE" : "SPATIAL RUNTIME V1 · MANIFEST DRIVEN"}</div>
       </header>
 
       <section className="viewport">
         {manifest ? (
-          <Canvas shadows camera={{ position: [36, 30, 44], fov: 42 }}>
+          <Canvas key={officeOpen ? "hermes-office" : "world-city"} shadows camera={{ position: officeOpen ? [18, 14, 20] : [36, 30, 44], fov: 42 }}>
             <color attach="background" args={["#020306"]} />
-            <fog attach="fog" args={["#020306", 34, 110]} />
-            <WorldScene manifest={manifest} selectedId={selectedId} mode={mode} />
+            <fog attach="fog" args={["#020306", officeOpen ? 20 : 34, officeOpen ? 75 : 110]} />
+            <WorldScene manifest={manifest} selectedId={selectedId} mode={mode} officeOpen={officeOpen} officeStep={officeStep} selectedAgentId={inspectedAgent?.id ?? null} onAgentSelect={setInspectedAgent} />
           </Canvas>
         ) : (
           <div className="loading">RESOLVING WORLD STATE…</div>
@@ -176,14 +186,38 @@ function App() {
           </div>
           <label>
             DISTRICT
-            <select value={selectedId ?? ""} onChange={(e) => setSelectedId(e.target.value || null)}>
+            <select value={selectedId ?? ""} onChange={(e) => { setSelectedId(e.target.value || null); setOfficeOpen(false); setInspectedAgent(null); }}>
               {manifest?.districts.map((district) => (
                 <option key={district.id} value={district.id}>{district.name}</option>
               ))}
             </select>
           </label>
+          {selectedId === "hermes-city" ? (
+            <div className="office-entry">
+              {officeOpen ? (
+                <>
+                  <button type="button" onClick={() => { setOfficeOpen(false); setInspectedAgent(null); }}>BACK TO CITY</button>
+                  <label htmlFor="office-seek">DEMO REPLAY · STEP {officeStep + 1}/{OFFICE_DEMO.length}</label>
+                  <input id="office-seek" aria-label="Scrub fictional office activity" type="range" min={0} max={OFFICE_DEMO.length - 1} value={officeStep} onChange={(e) => { setOfficeStep(Number(e.target.value)); setInspectedAgent(null); }} />
+                  <strong>{OFFICE_DEMO[officeStep].caption}</strong>
+                  <small>Fictional sequence. No real agents, approvals, runs, or verified receipts.</small>
+                  {inspectedAgent ? (
+                    <div className="office-inspector">
+                      <b>{inspectedAgent.name} · {inspectedAgent.role}</b>
+                      <span>Activity: {OFFICE_DEMO[officeStep].agents.find((a) => a.id === inspectedAgent.id)?.activity ?? "UNKNOWN"}</span>
+                      <span>Receipt: SIMULATED / NOT VERIFIED</span>
+                    </div>
+                  ) : <span>Select an agent in the 3D office to inspect its DEMO state.</span>}
+                </>
+              ) : demoOptIn ? (
+                <button type="button" onClick={() => setOfficeOpen(true)}>ENTER HERMES OFFICE · DEMO</button>
+              ) : (
+                <small>Office feature is OFF. Preview explicitly using <code>?office=demo</code>.</small>
+              )}
+            </div>
+          ) : null}
           <div className="doctrine">
-            <b>{selected?.name ?? "CITY"}</b>
+<b>{officeOpen ? "HERMES OFFICE / NKTYO 2090 VISUAL DESIGN" : selected?.name ?? "CITY"}</b>
             {selected?.purpose ? <span className="purpose">{selected.purpose}</span> : null}
             {selected?.operatorAgent ? (
               <div className="agent-status">
