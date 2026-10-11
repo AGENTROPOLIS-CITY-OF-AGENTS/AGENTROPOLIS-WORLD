@@ -48,3 +48,6 @@ button, select { font: inherit; }
 .agent-status span { color: #eefcff; }
 .agent-status small { grid-column: 2; color: var(--wc-amber); font-size: 9px; line-height: 1.35; }
 @media (max-width: 720px) { .hud { padding: 16px; } .status { display: none; } .hud p { max-width: 70vw; } .world-controls { left: 16px; right: 16px; bottom: 16px; width: auto; } }
+
+/* Anatomy X opt-in learning layer: never intercepts world controls until opened. */
+.explainer-open{position:fixed;z-index:30;left:clamp(12px,3vw,32px);bottom:18px;background:#08212a;color:#eaffff;border:1px solid #19e6e6;border-radius:9px;padding:12px 16px;cursor:pointer;font-weight:700;letter-spacing:.06em}.explainer-open:focus-visible{outline:3px solid #fff;outline-offset:3px}.explainer-popover{position:fixed;inset:auto 12px 80px 12px;max-height:min(80vh,760px);overflow:auto;width:min(620px,calc(100vw - 24px));margin:auto;border:1px solid #19e6e6;border-radius:14px;background:#05070a;color:#fff;padding:0;box-shadow:0 18px 60px #000c}.explainer-popover::backdrop{background:#0009}@media(max-width:720px){.explainer-open{bottom:calc(220px + env(safe-area-inset-bottom,0px));left:16px;font-size:11px;padding:10px}.explainer-popover{bottom:8px;max-height:90vh}}
