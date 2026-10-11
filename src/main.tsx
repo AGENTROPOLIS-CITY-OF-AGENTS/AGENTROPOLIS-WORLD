@@ -156,7 +156,7 @@ function App() {
       </header>
 
       <button className="explainer-open" type="button" onClick={() => document.getElementById("world-explainer")?.showPopover()}>HOW THIS WORLD WORKS</button>
-      <div id="world-explainer" popover="auto" className="explainer-popover"><agt-explainer data-preset="world"></agt-explainer></div>
+      <div id="world-explainer" popover="auto" className="explainer-popover">{React.createElement("agt-explainer", { "data-preset": "world" })}</div>
       <section className="viewport">
         {manifest ? (
           <Canvas shadows camera={{ position: [36, 30, 44], fov: 42 }}>
