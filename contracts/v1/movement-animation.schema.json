@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentropolis.city/contracts/v1/movement-animation.schema.json",
+  "title": "MovementAnimationState",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "agentId",
+    "pose",
+    "locomotion"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "agentropolis.spatial-contract.v1"
+    },
+    "agentId": {
+      "type": "string"
+    },
+    "districtId": {
+      "type": "string",
+      "enum": [
+        "axis",
+        "green-commons",
+        "creator",
+        "gaming",
+        "district-33",
+        "research",
+        "engineering",
+        "repository",
+        "finance",
+        "commerce",
+        "entertainment",
+        "sports",
+        "residential",
+        "hermes-city"
+      ]
+    },
+    "pose": {
+      "type": "object",
+      "required": [
+        "position",
+        "rotationY"
+      ],
+      "properties": {
+        "position": {
+          "type": "object",
+          "required": [
+            "x",
+            "y",
+            "z"
+          ],
+          "properties": {
+            "x": {
+              "type": "number"
+            },
+            "y": {
+              "type": "number"
+            },
+            "z": {
+              "type": "number"
+            }
+          }
+        },
+        "rotationY": {
+          "type": "number"
+        }
+      }
+    },
+    "locomotion": {
+      "type": "object",
+      "required": [
+        "state"
+      ],
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "idle",
+            "walk",
+            "run",
+            "sit",
+            "emote",
+            "traverse"
+          ]
+        },
+        "speedMps": {
+          "type": "number",
+          "minimum": 0
+        },
+        "clipId": {
+          "type": "string"
+        }
+      }
+    },
+    "facial": {
+      "type": "object",
+      "properties": {
+        "expressionId": {
+          "type": "string"
+        },
+        "visemeId": {
+          "type": "string"
+        },
+        "blendWeights": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        }
+      }
+    },
+    "ts": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

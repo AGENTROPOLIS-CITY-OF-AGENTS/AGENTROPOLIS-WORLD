@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentropolis.city/contracts/v1/agent-identity-appearance.schema.json",
+  "title": "AgentIdentityAppearance",
+  "description": "agentropolis.spatial-contract.v1 \u2014 agent identity and visual appearance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "agentId",
+    "displayName",
+    "appearance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "agentropolis.spatial-contract.v1"
+    },
+    "agentId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$"
+    },
+    "displayName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "homeDistrictId": {
+      "type": "string",
+      "enum": [
+        "axis",
+        "green-commons",
+        "creator",
+        "gaming",
+        "district-33",
+        "research",
+        "engineering",
+        "repository",
+        "finance",
+        "commerce",
+        "entertainment",
+        "sports",
+        "residential",
+        "hermes-city"
+      ]
+    },
+    "appearance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bodyType",
+        "primaryColor"
+      ],
+      "properties": {
+        "bodyType": {
+          "type": "string",
+          "enum": [
+            "humanoid",
+            "capsule_fallback",
+            "custom_rig"
+          ]
+        },
+        "rigAssetId": {
+          "type": "string"
+        },
+        "lodTier": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "primaryColor": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "accentColor": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "facialRig": {
+          "type": "string",
+          "enum": [
+            "none",
+            "arkit52",
+            "custom"
+          ]
+        },
+        "heightMeters": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 3.0
+        }
+      }
+    },
+    "provenanceAssetId": {
+      "type": "string"
+    }
+  }
+}

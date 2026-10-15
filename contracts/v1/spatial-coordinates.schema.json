@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentropolis.city/contracts/v1/spatial-coordinates.schema.json",
+  "title": "SpatialCoordinates",
+  "description": "District/building/floor/office coordinates. Preserves AGENTROPOLIS-WORLD world.manifest.json district ids and parcels (agentropolis.spatial-runtime.v1).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "spatialRuntimeContract",
+    "districts"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "agentropolis.spatial-contract.v1"
+    },
+    "spatialRuntimeContract": {
+      "const": "agentropolis.spatial-runtime.v1"
+    },
+    "worldVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "districts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "parcel"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "enum": [
+              "axis",
+              "green-commons",
+              "creator",
+              "gaming",
+              "district-33",
+              "research",
+              "engineering",
+              "repository",
+              "finance",
+              "commerce",
+              "entertainment",
+              "sports",
+              "residential",
+              "hermes-city"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "parcel": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "z",
+              "width",
+              "depth"
+            ],
+            "properties": {
+              "x": {
+                "type": "number"
+              },
+              "z": {
+                "type": "number"
+              },
+              "width": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              },
+              "depth": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              }
+            }
+          },
+          "buildings": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "buildingId",
+                "localOffset"
+              ],
+              "properties": {
+                "buildingId": {
+                  "type": "string"
+                },
+                "localOffset": {
+                  "type": "object",
+                  "required": [
+                    "x",
+                    "y",
+                    "z"
+                  ],
+                  "properties": {
+                    "x": {
+                      "type": "number"
+                    },
+                    "y": {
+                      "type": "number"
+                    },
+                    "z": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "floors": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "floorIndex",
+                      "offices"
+                    ],
+                    "properties": {
+                      "floorIndex": {
+                        "type": "integer",
+                        "minimum": 0
+                      },
+                      "offices": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "officeId"
+                          ],
+                          "properties": {
+                            "officeId": {
+                              "type": "string"
+                            },
+                            "label": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
