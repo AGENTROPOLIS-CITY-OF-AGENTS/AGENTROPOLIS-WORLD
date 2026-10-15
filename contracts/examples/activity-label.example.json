@@ -1,0 +1,7 @@
+{
+  "schemaVersion": "agentropolis.spatial-contract.v1",
+  "label": "simulated",
+  "subjectRef": "interaction:sim-meet-001",
+  "receiptRef": null,
+  "note": "Vertical-slice social demo; not live Hermes work"
+}

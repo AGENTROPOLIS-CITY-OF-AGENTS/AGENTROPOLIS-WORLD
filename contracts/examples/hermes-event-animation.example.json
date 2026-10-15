@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "agentropolis.spatial-contract.v1",
+  "eventType": "task.assigned",
+  "causationId": "evt-fixture-001",
+  "actorId": "grok-06-hermes-bridge",
+  "districtId": "hermes-city",
+  "activityLabel": "replay",
+  "animation": {
+    "locomotionState": "emote",
+    "clipId": "emote.acknowledge",
+    "gestureId": "gesture.nod",
+    "atgSymbol": "ATG.ACK"
+  },
+  "authority": {
+    "mandateId": "mandate-demo",
+    "policyId": "policy-read",
+    "receiptRef": "receipt-fixture-001"
+  }
+}

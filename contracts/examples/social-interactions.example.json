@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "agentropolis.spatial-contract.v1",
+  "interactionId": "sim-meet-001",
+  "kind": "meeting",
+  "participants": [
+    {
+      "agentId": "grok-00-scout",
+      "role": "reporter"
+    },
+    {
+      "agentId": "grok-01-director",
+      "role": "facilitator"
+    }
+  ],
+  "districtId": "axis",
+  "activityLabel": "simulated",
+  "consentBoundary": "public_sim",
+  "startedAt": "2026-10-15T17:00:00-07:00"
+}
