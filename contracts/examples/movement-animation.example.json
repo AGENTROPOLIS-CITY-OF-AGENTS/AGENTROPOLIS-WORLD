@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "agentropolis.spatial-contract.v1",
+  "agentId": "grok-00-scout",
+  "districtId": "axis",
+  "pose": {
+    "position": {
+      "x": 0.5,
+      "y": 0,
+      "z": -1.2
+    },
+    "rotationY": 1.57
+  },
+  "locomotion": {
+    "state": "walk",
+    "speedMps": 1.2,
+    "clipId": "locomotion.walk"
+  },
+  "facial": {
+    "expressionId": "neutral",
+    "visemeId": "sil"
+  },
+  "ts": "2026-10-15T17:00:00-07:00"
+}

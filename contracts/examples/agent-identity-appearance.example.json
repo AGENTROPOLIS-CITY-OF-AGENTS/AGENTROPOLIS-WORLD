@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "agentropolis.spatial-contract.v1",
+  "agentId": "grok-00-scout",
+  "displayName": "GROK-00 SCOUT",
+  "homeDistrictId": "axis",
+  "appearance": {
+    "bodyType": "humanoid",
+    "rigAssetId": "actor.proto.v0",
+    "lodTier": 1,
+    "primaryColor": "#36DCFF",
+    "accentColor": "#7EEEFF",
+    "facialRig": "arkit52",
+    "heightMeters": 1.78
+  },
+  "provenanceAssetId": "asset-actor-proto-v0"
+}

@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentropolis.city/contracts/v1/asset-licensing-provenance.schema.json",
+  "title": "AssetLicensingProvenance",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "assetId",
+    "license",
+    "source"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "agentropolis.spatial-contract.v1"
+    },
+    "assetId": {
+      "type": "string"
+    },
+    "displayName": {
+      "type": "string"
+    },
+    "license": {
+      "type": "object",
+      "required": [
+        "spdxOrName",
+        "commercialUse"
+      ],
+      "properties": {
+        "spdxOrName": {
+          "type": "string"
+        },
+        "commercialUse": {
+          "type": "boolean"
+        },
+        "attributionRequired": {
+          "type": "boolean"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "origin"
+      ],
+      "properties": {
+        "origin": {
+          "type": "string",
+          "enum": [
+            "original",
+            "commissioned",
+            "licensed_marketplace",
+            "cc0",
+            "internal"
+          ]
+        },
+        "vendor": {
+          "type": "string"
+        },
+        "purchaseRef": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "path",
+          "sha256"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    }
+  }
+}
