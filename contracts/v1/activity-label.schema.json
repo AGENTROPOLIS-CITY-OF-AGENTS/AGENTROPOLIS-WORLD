@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentropolis.city/contracts/v1/activity-label.schema.json",
+  "title": "ActivityLabel",
+  "description": "Live, replay, and simulated activity labels \u2014 unreceipted events must not be labelled live.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "label",
+    "subjectRef"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "agentropolis.spatial-contract.v1"
+    },
+    "label": {
+      "type": "string",
+      "enum": [
+        "live",
+        "replay",
+        "simulated"
+      ]
+    },
+    "subjectRef": {
+      "type": "string"
+    },
+    "receiptRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "note": {
+      "type": "string",
+      "maxLength": 512
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "label": {
+            "const": "live"
+          }
+        },
+        "required": [
+          "label"
+        ]
+      },
+      "then": {
+        "required": [
+          "receiptRef"
+        ],
+        "properties": {
+          "receiptRef": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ]
+}

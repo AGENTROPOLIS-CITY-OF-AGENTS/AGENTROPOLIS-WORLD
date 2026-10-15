@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentropolis.city/contracts/v1/hermes-event-animation.schema.json",
+  "title": "HermesEventToAnimationMapping",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "eventType",
+    "animation"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "agentropolis.spatial-contract.v1"
+    },
+    "eventType": {
+      "type": "string",
+      "minLength": 1
+    },
+    "causationId": {
+      "type": "string"
+    },
+    "actorId": {
+      "type": "string"
+    },
+    "districtId": {
+      "type": "string",
+      "enum": [
+        "axis",
+        "green-commons",
+        "creator",
+        "gaming",
+        "district-33",
+        "research",
+        "engineering",
+        "repository",
+        "finance",
+        "commerce",
+        "entertainment",
+        "sports",
+        "residential",
+        "hermes-city"
+      ]
+    },
+    "activityLabel": {
+      "type": "string",
+      "enum": [
+        "live",
+        "replay",
+        "simulated"
+      ]
+    },
+    "animation": {
+      "type": "object",
+      "required": [
+        "locomotionState"
+      ],
+      "properties": {
+        "locomotionState": {
+          "type": "string",
+          "enum": [
+            "idle",
+            "walk",
+            "run",
+            "sit",
+            "emote",
+            "traverse"
+          ]
+        },
+        "clipId": {
+          "type": "string"
+        },
+        "gestureId": {
+          "type": "string"
+        },
+        "facialExpressionId": {
+          "type": "string"
+        },
+        "atgSymbol": {
+          "type": "string"
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "properties": {
+        "mandateId": {
+          "type": "string"
+        },
+        "policyId": {
+          "type": "string"
+        },
+        "receiptRef": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

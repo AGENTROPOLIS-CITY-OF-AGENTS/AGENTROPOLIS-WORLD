@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentropolis.city/contracts/v1/atg-expressions.schema.json",
+  "title": "AtgExpressionMapping",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "mappings"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "agentropolis.spatial-contract.v1"
+    },
+    "mapVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "atgSymbol",
+          "gestureId",
+          "affect"
+        ],
+        "properties": {
+          "atgSymbol": {
+            "type": "string",
+            "minLength": 1
+          },
+          "gestureId": {
+            "type": "string"
+          },
+          "animationState": {
+            "type": "string"
+          },
+          "affect": {
+            "type": "object",
+            "required": [
+              "valence",
+              "arousal"
+            ],
+            "properties": {
+              "valence": {
+                "type": "number",
+                "minimum": -1,
+                "maximum": 1
+              },
+              "arousal": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          },
+          "facialExpressionId": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

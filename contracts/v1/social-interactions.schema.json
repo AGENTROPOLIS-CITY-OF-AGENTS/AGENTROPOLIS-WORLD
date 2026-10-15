@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentropolis.city/contracts/v1/social-interactions.schema.json",
+  "title": "SocialInteraction",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "interactionId",
+    "participants",
+    "kind",
+    "activityLabel"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "agentropolis.spatial-contract.v1"
+    },
+    "interactionId": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "conversation",
+        "meeting",
+        "crowd_ambient",
+        "handoff",
+        "broadcast"
+      ]
+    },
+    "participants": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "agentId"
+        ],
+        "properties": {
+          "agentId": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "districtId": {
+      "type": "string",
+      "enum": [
+        "axis",
+        "green-commons",
+        "creator",
+        "gaming",
+        "district-33",
+        "research",
+        "engineering",
+        "repository",
+        "finance",
+        "commerce",
+        "entertainment",
+        "sports",
+        "residential",
+        "hermes-city"
+      ]
+    },
+    "activityLabel": {
+      "type": "string",
+      "enum": [
+        "live",
+        "replay",
+        "simulated"
+      ]
+    },
+    "consentBoundary": {
+      "type": "string",
+      "enum": [
+        "public_sim",
+        "participants_only",
+        "receipted"
+      ]
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "endedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
