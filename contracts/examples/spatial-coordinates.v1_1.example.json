@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "agentropolis.spatial-contract.v1",
+  "spatialRuntimeContract": "agentropolis.spatial-runtime.v1",
+  "worldVersion": 4,
+  "contractRevision": "1.1.0",
+  "coordinateSystem": {
+    "units": "meters",
+    "upAxis": "Y",
+    "handedness": "right",
+    "parcelAnchor": "center",
+    "localOffsetOrigin": "parcel-center"
+  },
+  "districts": [
+    {
+      "id": "axis",
+      "name": "Axis / Mission Control",
+      "parcel": { "x": 0, "z": 0, "width": 9, "depth": 9 },
+      "nativeRefs": { "world": "axis" },
+      "buildings": [
+        {
+          "buildingId": "mission-control-hq",
+          "name": "Mission Control HQ",
+          "districtRef": "axis",
+          "localOffset": { "x": 0, "y": 0, "z": 0 },
+          "nativeRefs": { "world": "axis-0" },
+          "procedural": { "generator": "world.seededUnit", "seed": 17, "index": 0 },
+          "floors": [
+            {
+              "floorIndex": 0,
+              "name": "Ground",
+              "offices": [
+                { "officeId": "lobby", "label": "Lobby", "nativeRefs": { "world": "axis-0-lobby" } }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hermes-city",
+      "name": "HERMES CITY",
+      "parcel": { "x": 0, "z": 29, "width": 12, "depth": 9 },
+      "nativeRefs": { "world": "hermes-city" },
+      "buildings": [
+        {
+          "buildingId": "hermes-hq",
+          "name": "Hermes HQ",
+          "districtRef": "hermes-city",
+          "localOffset": { "x": 0, "y": 0, "z": 0 },
+          "nativeRefs": { "hermes-city": "Hermes HQ" }
+        },
+        {
+          "buildingId": "nemoclaw-works",
+          "name": "NemoClaw Works",
+          "localOffset": { "x": -4.1, "y": 0, "z": -2.7 },
+          "nativeRefs": { "hermes-city": "NemoClaw Works" }
+        }
+      ]
+    }
+  ],
+  "areaBindings": [
+    {
+      "app": "hermes-city",
+      "areaId": "scene-root",
+      "districtRef": "hermes-city",
+      "origin": { "x": 0, "y": 0, "z": 0 },
+      "scale": 1,
+      "rotationY": 0,
+      "status": "assumed",
+      "note": "No source states HERMES-CITY sits on WORLD's hermes-city parcel (INTEGRATOR assumption 1)."
+    },
+    {
+      "app": "cityworld",
+      "areaId": "District 1",
+      "districtRef": "engineering",
+      "status": "proposed",
+      "note": "Illustrative only; the CityWorld -> WORLD district mapping is an owner decision."
+    }
+  ]
+}

@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://agentropolis.city/contracts/v1/spatial-coordinates.schema.json",
   "title": "SpatialCoordinates",
-  "description": "District/building/floor/office coordinates. Preserves AGENTROPOLIS-WORLD world.manifest.json district ids and parcels (agentropolis.spatial-runtime.v1).",
+  "description": "District/building/floor/office coordinates. Preserves AGENTROPOLIS-WORLD world.manifest.json district ids and parcels (agentropolis.spatial-runtime.v1). Contract revision 1.1.0: additive, backward-compatible (nativeRefs, coordinateSystem, areaBindings/districtRef, building name, procedural seed). Every v1.0 document remains valid.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -20,6 +20,44 @@
     "worldVersion": {
       "type": "integer",
       "minimum": 1
+    },
+    "contractRevision": {
+      "type": "string",
+      "pattern": "^1\\.[0-9]+\\.[0-9]+$",
+      "description": "Optional semver of the v1 contract revision this document targets. Absent = 1.0.0.",
+      "examples": [
+        "1.1.0"
+      ]
+    },
+    "coordinateSystem": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "G2: declares units/axes/anchor. All fields are fixed by the contract; the object is optional and, when absent, these defaults apply. Evidence: AGENTROPOLIS-WORLD@886cf9f src/main.tsx L51-52, L62-63, L73 (parcel x/z is the parcel centre; buildings placed at y=h/2 in three.js Y-up right-handed space).",
+      "properties": {
+        "units": {
+          "const": "meters",
+          "default": "meters",
+          "description": "1 contract unit = 1 three.js world unit, interpreted as 1 meter. WORLD source has no explicit unit; meters is a contract convention."
+        },
+        "upAxis": {
+          "const": "Y",
+          "default": "Y"
+        },
+        "handedness": {
+          "const": "right",
+          "default": "right"
+        },
+        "parcelAnchor": {
+          "const": "center",
+          "default": "center",
+          "description": "parcel.x/z is the centre of the parcel footprint; footprint spans x\u00b1width/2, z\u00b1depth/2."
+        },
+        "localOffsetOrigin": {
+          "const": "parcel-center",
+          "default": "parcel-center",
+          "description": "building.localOffset is relative to the owning district's parcel centre at y=0 (ground)."
+        }
+      }
     },
     "districts": {
       "type": "array",
@@ -92,26 +130,10 @@
               ],
               "properties": {
                 "buildingId": {
-                  "type": "string"
+                  "$ref": "#/$defs/slugId"
                 },
                 "localOffset": {
-                  "type": "object",
-                  "required": [
-                    "x",
-                    "y",
-                    "z"
-                  ],
-                  "properties": {
-                    "x": {
-                      "type": "number"
-                    },
-                    "y": {
-                      "type": "number"
-                    },
-                    "z": {
-                      "type": "number"
-                    }
-                  }
+                  "$ref": "#/$defs/vec3"
                 },
                 "floors": {
                   "type": "array",
@@ -135,20 +157,184 @@
                           ],
                           "properties": {
                             "officeId": {
-                              "type": "string"
+                              "$ref": "#/$defs/slugId"
                             },
                             "label": {
                               "type": "string"
+                            },
+                            "nativeRefs": {
+                              "$ref": "#/$defs/nativeRefs"
                             }
-                          }
+                          },
+                          "additionalProperties": false
                         }
+                      },
+                      "nativeRefs": {
+                        "$ref": "#/$defs/nativeRefs"
+                      },
+                      "name": {
+                        "type": "string",
+                        "minLength": 1
                       }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "G4: human-readable building name."
+                },
+                "districtRef": {
+                  "$ref": "#/$defs/districtId",
+                  "description": "G3: optional explicit district id; when present must equal the containing district's id."
+                },
+                "nativeRefs": {
+                  "$ref": "#/$defs/nativeRefs"
+                },
+                "procedural": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "generator",
+                    "seed",
+                    "index"
+                  ],
+                  "description": "G5: makes procedurally generated buildings addressable. buildingId must be stable (derived from generator+seed+index), never from Math.random().",
+                  "properties": {
+                    "generator": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Generator id, e.g. 'world.seededUnit' or 'cityworld.towers'."
+                    },
+                    "seed": {
+                      "type": "integer"
+                    },
+                    "index": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "params": {
+                      "type": "object"
                     }
                   }
                 }
               }
             }
+          },
+          "nativeRefs": {
+            "$ref": "#/$defs/nativeRefs"
           }
+        }
+      }
+    },
+    "areaBindings": {
+      "type": "array",
+      "description": "G3: links an app's native area (e.g. a CityWorld district, a HERMES-CITY scene) to a WORLD district id.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "app",
+          "areaId",
+          "districtRef"
+        ],
+        "properties": {
+          "app": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9._-]*$"
+          },
+          "areaId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The app's native area id/label."
+          },
+          "districtRef": {
+            "$ref": "#/$defs/districtId"
+          },
+          "origin": {
+            "$ref": "#/$defs/vec3",
+            "description": "Position of the app's local origin relative to the district parcel centre (meters). Default {0,0,0}."
+          },
+          "scale": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "default": 1
+          },
+          "rotationY": {
+            "type": "number",
+            "default": 0,
+            "description": "Radians about +Y."
+          },
+          "status": {
+            "enum": [
+              "verified",
+              "assumed",
+              "proposed"
+            ],
+            "description": "Provenance of the binding."
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$comment": "v1.1.0. schemaVersion const is unchanged so v1.0 documents still validate; contractRevision is optional.",
+  "$defs": {
+    "districtId": {
+      "type": "string",
+      "enum": [
+        "axis",
+        "green-commons",
+        "creator",
+        "gaming",
+        "district-33",
+        "research",
+        "engineering",
+        "repository",
+        "finance",
+        "commerce",
+        "entertainment",
+        "sports",
+        "residential",
+        "hermes-city"
+      ]
+    },
+    "nativeRefs": {
+      "type": "object",
+      "description": "G1: map of app/renderer key -> that app's native id for this object (e.g. {\"hermes-city\":\"Hermes HQ\",\"cityworld\":\"District 3\"}).",
+      "propertyNames": {
+        "pattern": "^[a-z0-9][a-z0-9._-]*$"
+      },
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "slugId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "vec3": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "x",
+        "y",
+        "z"
+      ],
+      "properties": {
+        "x": {
+          "type": "number"
+        },
+        "y": {
+          "type": "number"
+        },
+        "z": {
+          "type": "number"
         }
       }
     }

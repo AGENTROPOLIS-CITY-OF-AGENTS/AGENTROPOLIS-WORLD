@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "agentropolis.spatial-contract.v1",
+  "spatialRuntimeContract": "agentropolis.spatial-runtime.v1",
+  "contractRevision": "1.1.0",
+  "districts": [
+    {
+      "id": "engineering",
+      "name": "Engineering",
+      "parcel": { "x": -18, "z": 0, "width": 12, "depth": 10 },
+      "buildings": [
+        {
+          "buildingId": "cityworld-district-1-tower-0",
+          "name": "CityWorld District 1 Tower 0",
+          "localOffset": { "x": -2, "y": 0, "z": 1.5 },
+          "nativeRefs": { "cityworld": "District 1" },
+          "procedural": { "generator": "cityworld.towers", "seed": 20261015, "index": 0, "params": { "district": 1 } }
+        },
+        {
+          "buildingId": "cityworld-district-1-tower-1",
+          "name": "CityWorld District 1 Tower 1",
+          "localOffset": { "x": 2, "y": 0, "z": -1.5 },
+          "nativeRefs": { "cityworld": "District 1" },
+          "procedural": { "generator": "cityworld.towers", "seed": 20261015, "index": 1, "params": { "district": 1 } }
+        }
+      ]
+    }
+  ]
+}
