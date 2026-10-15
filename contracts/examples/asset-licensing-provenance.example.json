@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "agentropolis.spatial-contract.v1",
+  "assetId": "asset-actor-proto-v0",
+  "displayName": "Mission Control hero actor prototype",
+  "license": {
+    "spdxOrName": "LicenseRef-Pending-Owner-Approval",
+    "commercialUse": false,
+    "attributionRequired": true,
+    "notes": "Placeholder until licensed or original asset approved; no purchase made."
+  },
+  "source": {
+    "origin": "internal",
+    "vendor": "AGENTROPOLIS-CREATOR",
+    "createdAt": "2026-10-15T17:00:00-07:00"
+  },
+  "files": []
+}
