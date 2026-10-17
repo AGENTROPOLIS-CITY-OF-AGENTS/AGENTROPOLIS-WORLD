@@ -58,6 +58,12 @@ AGENTROPOLIS-WORLD does **not** own authority. It visualizes and interacts with 
 
 Repository District maps repositories across `AGENTROPOLIS-CITY-OF-AGENTS` and `WIREDCHAOS` into buildings with governed operational interiors. See [the Repository District contract](docs/repository-district.md).
 
+## Human actor prototype
+
+An opt-in rigged human (`hf-actor-0001`) opens from the world panel, or with `?actor=1`. Motion on that stage is **simulated**: procedural blink, expression presets, and pose offsets are not agent execution and are not a city resident.
+
+CC0 source assets, licenses, provenance, pipeline, and the original prototype report live in [assets/human-forge](assets/human-forge/README.md).
+
 ## License
 
 This repository intentionally contains **no open-source license**.
