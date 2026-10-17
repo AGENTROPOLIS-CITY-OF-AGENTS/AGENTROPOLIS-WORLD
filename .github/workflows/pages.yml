@@ -49,6 +49,21 @@ jobs:
               p.write_text(s)
           PY
 
+      - name: Pin the built baseline
+        run: REQUIRE_DIST=1 npm test
+
+      - name: Install Google Chrome
+        run: |
+          if ! command -v google-chrome >/dev/null 2>&1; then
+            curl -fsSL -o /tmp/google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo apt-get update
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y /tmp/google-chrome-stable_current_amd64.deb
+          fi
+          google-chrome --version
+
+      - name: Headless smoke of the Pages artifact
+        run: npm run smoke
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
