@@ -1,7 +1,15 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ComponentType } from "react";
 import ReactDOM from "react-dom/client";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import { Environment, Grid, OrbitControls } from "@react-three/drei";
+import type { PerspectiveCamera } from "three";
+import {
+  ACTOR_PRESETS,
+  readActorLaunch,
+  type ActorLod,
+  type ActorSceneProps,
+  type ActorView,
+} from "./components/actors/previewPresets";
 import "./styles.css";
 
 type Parcel = { x: number; z: number; width: number; depth: number };
@@ -29,6 +37,21 @@ type WorldManifest = {
   districts: District[];
 };
 type ViewMode = "city" | "district" | "diorama" | "mission";
+
+function FrameCityCamera({ target }: { target: [number, number, number] }) {
+  const camera = useThree((state) => state.camera) as PerspectiveCamera;
+  const initialTarget = useRef(target);
+  useLayoutEffect(() => {
+    camera.position.set(36, 30, 44);
+    camera.fov = 42;
+    camera.near = 0.1;
+    camera.far = 2000;
+    camera.updateProjectionMatrix();
+    const [x, y, z] = initialTarget.current;
+    camera.lookAt(x, y, z);
+  }, [camera]);
+  return null;
+}
 
 function seededUnit(seed: number) {
   const x = Math.sin(seed * 12.9898) * 43758.5453;
@@ -91,6 +114,7 @@ function WorldScene({ manifest, selectedId, mode }: { manifest: WorldManifest; s
 
   return (
     <>
+      <FrameCityCamera target={target} />
       <ambientLight intensity={0.35} />
       <directionalLight position={[18, 26, 12]} intensity={2.4} castShadow />
       <pointLight position={[0, 18, 0]} intensity={55} color="#00e5ff" distance={42} />
@@ -128,9 +152,40 @@ function WorldScene({ manifest, selectedId, mode }: { manifest: WorldManifest; s
 }
 
 function App() {
+  const launch = useMemo(readActorLaunch, []);
   const [manifest, setManifest] = useState<WorldManifest | null>(null);
   const [selectedId, setSelectedId] = useState<string | null>("repository");
   const [mode, setMode] = useState<ViewMode>("city");
+  const [actorPreview, setActorPreview] = useState(launch.preview);
+  const [actorView, setActorView] = useState<ActorView>(launch.view);
+  const [actorExpr, setActorExpr] = useState(launch.expr);
+  const [actorPose, setActorPose] = useState(launch.poseTest);
+  const [actorLod, setActorLod] = useState<ActorLod>(launch.lod);
+  const [morphCounts, setMorphCounts] = useState<Record<number, number>>({});
+  const [expressionsOpen, setExpressionsOpen] = useState(false);
+  const [ActorStage, setActorStage] = useState<ComponentType<ActorSceneProps> | null>(null);
+
+  const onMorphDictionary = useCallback((lod: number, dict: Record<string, number>) => {
+    const names = Object.keys(dict);
+    setMorphCounts((previous) => (previous[lod] === names.length ? previous : { ...previous, [lod]: names.length }));
+    window.__HF_REPORT = {
+      ...(window.__HF_REPORT ?? {}),
+      simulated: true,
+      [`lod${lod}MorphCount`]: names.length,
+      [`lod${lod}Morphs`]: names,
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!actorPreview || ActorStage) return;
+    let cancelled = false;
+    import("./components/actors/ActorScene").then((mod) => {
+      if (!cancelled) setActorStage(() => mod.ActorScene);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [actorPreview, ActorStage]);
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}world.manifest.json`, { cache: "no-store" })
@@ -158,22 +213,56 @@ function App() {
       <section className="viewport">
         {manifest ? (
           <Canvas shadows camera={{ position: [36, 30, 44], fov: 42 }}>
-            <color attach="background" args={["#020306"]} />
-            <fog attach="fog" args={["#020306", 34, 110]} />
-            <WorldScene manifest={manifest} selectedId={selectedId} mode={mode} />
+            <color attach="background" args={[actorPreview ? "#05070A" : "#020306"]} />
+            {actorPreview ? null : <fog attach="fog" args={["#020306", 34, 110]} />}
+            {actorPreview && ActorStage ? (
+              <ActorStage
+                view={actorView}
+                expression={ACTOR_PRESETS[actorExpr] ?? {}}
+                poseTest={actorPose}
+                blink={launch.blink}
+                lod={actorLod}
+                onMorphDictionary={onMorphDictionary}
+              />
+            ) : actorPreview ? null : (
+              <WorldScene manifest={manifest} selectedId={selectedId} mode={mode} />
+            )}
           </Canvas>
         ) : (
           <div className="loading">RESOLVING WORLD STATE…</div>
         )}
 
-        <aside className="world-controls">
+        {actorPreview ? (
+          <div className="actor-banner">
+            HUMAN FORGE · hf-actor-0001 · <strong>SIMULATED</strong>
+            <span>Blink, expressions, and pose offsets are procedural. They do not represent real agent execution.</span>
+          </div>
+        ) : null}
+
+        <aside className={`world-controls${actorPreview ? " actor-open" : ""}${expressionsOpen ? " expressions-open" : ""}`}>
           <div className="mode-row">
             {(["city", "district", "diorama", "mission"] as ViewMode[]).map((item) => (
-              <button key={item} className={mode === item ? "active" : ""} onClick={() => setMode(item)}>
+              <button
+                key={item}
+                className={!actorPreview && mode === item ? "active" : ""}
+                onClick={() => {
+                  setActorPreview(false);
+                  setMode(item);
+                }}
+              >
                 {item}
               </button>
             ))}
           </div>
+          <button className={actorPreview ? "actor-toggle active" : "actor-toggle"} onClick={() => setActorPreview((open) => !open)}>
+            {actorPreview ? "Return to city" : "Human actor prototype"}
+          </button>
+          {actorPreview ? (
+            <button className="expressions-toggle" onClick={() => setExpressionsOpen((open) => !open)}>
+              {expressionsOpen ? "Hide expressions" : "Expressions"}
+            </button>
+          ) : null}
+          {actorPreview ? null : (
           <label>
             DISTRICT
             <select value={selectedId ?? ""} onChange={(e) => setSelectedId(e.target.value || null)}>
@@ -182,6 +271,42 @@ function App() {
               ))}
             </select>
           </label>
+          )}
+          {actorPreview ? (
+            <div className="actor-controls">
+              <div className="preset-row">
+                {(["hero", "face", "lods"] as ActorView[]).map((item) => (
+                  <button key={item} className={actorView === item ? "active" : ""} onClick={() => setActorView(item)}>
+                    {item}
+                  </button>
+                ))}
+              </div>
+              <div className="preset-row">
+                {Object.keys(ACTOR_PRESETS).map((name) => (
+                  <button key={name} className={actorExpr === name ? "active" : ""} onClick={() => setActorExpr(name)}>
+                    {name}
+                  </button>
+                ))}
+              </div>
+              <div className="preset-row">
+                <button className={actorPose ? "active" : ""} onClick={() => setActorPose((on) => !on)}>
+                  pose test
+                </button>
+                {(["auto", 0, 1, 2] as ActorLod[]).map((tier) => (
+                  <button key={String(tier)} className={actorLod === tier ? "active" : ""} onClick={() => setActorLod(tier)}>
+                    {tier === "auto" ? "lod auto" : `lod ${tier}`}
+                  </button>
+                ))}
+              </div>
+              <p className="simulated-note">
+                SIMULATED stage. Morph weights and joint offsets are authored preview data, not an agent receipt.
+                {Object.keys(morphCounts).length
+                  ? ` Morphs loaded: ${Object.entries(morphCounts).map(([lod, count]) => `LOD${lod}=${count}`).join(" ")}.`
+                  : " Loading actor geometry…"}
+              </p>
+            </div>
+          ) : null}
+          {actorPreview ? null : (
           <div className="doctrine">
             <b>{selected?.name ?? "CITY"}</b>
             {selected?.purpose ? <span className="purpose">{selected.purpose}</span> : null}
@@ -204,6 +329,7 @@ function App() {
             <span>Renderer displays; it does not own truth.</span>
             <span>Diorama is a lens over canonical world state.</span>
           </div>
+          )}
         </aside>
       </section>
     </main>

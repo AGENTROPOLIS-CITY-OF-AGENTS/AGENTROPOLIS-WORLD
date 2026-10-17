@@ -1,0 +1,23 @@
+PASS | LOD0: exactly one skin
+PASS | LOD0: 163-joint MakeHuman skeleton
+PASS | LOD0: key joints present
+PASS | LOD0: actor identity extras stable
+PASS | LOD0: height 1.5-2.0 m, feet at y~0
+PASS | LOD1: exactly one skin
+PASS | LOD1: 163-joint MakeHuman skeleton
+PASS | LOD1: key joints present
+PASS | LOD1: actor identity extras stable
+PASS | LOD1: height 1.5-2.0 m, feet at y~0
+PASS | LOD2: exactly one skin
+PASS | LOD2: 163-joint MakeHuman skeleton
+PASS | LOD2: key joints present
+PASS | LOD2: actor identity extras stable
+PASS | LOD2: height 1.5-2.0 m, feet at y~0
+PASS | LOD0/1/2 share identical joint order (identity-stable rig across LODs)
+PASS | LOD0: 59 facial morph targets with names
+PASS | LOD0: required facial shapes present
+PASS | LOD0: JawDrop moves verts 5-40 mm, body untouched
+PASS | LOD1: 59 facial morph targets with names
+PASS | LOD1: required facial shapes present
+PASS | LOD1: JawDrop moves verts 5-40 mm, body untouched
+PASS | LOD2: no morphs (crowd tier)

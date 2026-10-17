@@ -1,0 +1,26 @@
+{
+  "hf-actor-lod0": {
+    "file": "public/models/hf-actor-lod0.glb",
+    "bytes": 2095712,
+    "ratio": 1,
+    "vertices": 15066,
+    "triangles": 27676,
+    "morphTargets": 59
+  },
+  "hf-actor-lod1": {
+    "file": "public/models/hf-actor-lod1.glb",
+    "bytes": 746800,
+    "ratio": 0.4,
+    "vertices": 6315,
+    "triangles": 11166,
+    "morphTargets": 59
+  },
+  "hf-actor-lod2": {
+    "file": "public/models/hf-actor-lod2.glb",
+    "bytes": 196004,
+    "ratio": 0.12,
+    "vertices": 2231,
+    "triangles": 3649,
+    "morphTargets": 0
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "public/models/hf-actor-lod0.glb": {
+    "validatorVersion": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 1,
+    "infos": 5,
+    "hints": 0,
+    "messages": [
+      "2:UNUSED_OBJECT /meshes/0/primitives/0/attributes/TEXCOORD_0 This object may be unused.",
+      "2:UNUSED_OBJECT /meshes/0/primitives/1/attributes/TEXCOORD_0 This object may be unused.",
+      "2:UNUSED_OBJECT /meshes/0/primitives/2/attributes/TEXCOORD_0 This object may be unused.",
+      "2:UNUSED_OBJECT /meshes/0/primitives/3/attributes/TEXCOORD_0 This object may be unused.",
+      "2:UNUSED_OBJECT /meshes/0/primitives/4/attributes/TEXCOORD_0 This object may be unused.",
+      "1:NODE_SKINNED_MESH_NON_ROOT /nodes/163 Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh."
+    ]
+  },
+  "public/models/hf-actor-lod1.glb": {
+    "validatorVersion": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 1,
+    "infos": 5,
+    "hints": 0,
+    "messages": [
+      "2:UNUSED_OBJECT /meshes/0/primitives/0/attributes/TEXCOORD_0 This object may be unused.",
+      "2:UNUSED_OBJECT /meshes/0/primitives/1/attributes/TEXCOORD_0 This object may be unused.",
+      "2:UNUSED_OBJECT /meshes/0/primitives/2/attributes/TEXCOORD_0 This object may be unused.",
+      "2:UNUSED_OBJECT /meshes/0/primitives/3/attributes/TEXCOORD_0 This object may be unused.",
+      "2:UNUSED_OBJECT /meshes/0/primitives/4/attributes/TEXCOORD_0 This object may be unused.",
+      "1:NODE_SKINNED_MESH_NON_ROOT /nodes/163 Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh."
+    ]
+  },
+  "public/models/hf-actor-lod2.glb": {
+    "validatorVersion": "2.0.0-dev.3.10",
+    "errors": 0,
+    "warnings": 1,
+    "infos": 5,
+    "hints": 0,
+    "messages": [
+      "2:UNUSED_OBJECT /meshes/0/primitives/0/attributes/TEXCOORD_0 This object may be unused.",
+      "2:UNUSED_OBJECT /meshes/0/primitives/1/attributes/TEXCOORD_0 This object may be unused.",
+      "2:UNUSED_OBJECT /meshes/0/primitives/2/attributes/TEXCOORD_0 This object may be unused.",
+      "2:UNUSED_OBJECT /meshes/0/primitives/3/attributes/TEXCOORD_0 This object may be unused.",
+      "2:UNUSED_OBJECT /meshes/0/primitives/4/attributes/TEXCOORD_0 This object may be unused.",
+      "1:NODE_SKINNED_MESH_NON_ROOT /nodes/163 Node with a skinned mesh is not root. Parent transforms will not affect a skinned mesh."
+    ]
+  }
+}
+exit 0
