@@ -1,0 +1,56 @@
+name: PR qualification
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  vendored-baseline:
+    name: Vendored baseline
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Remote-script and digest regression
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Prove build output
+        run: REQUIRE_DIST=1 npm test
+
+      - name: Install Google Chrome
+        run: |
+          if ! command -v google-chrome >/dev/null 2>&1; then
+            curl -fsSL -o /tmp/google-chrome-stable_current_amd64.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo apt-get update
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y /tmp/google-chrome-stable_current_amd64.deb
+          fi
+          google-chrome --version
+
+      - name: Headless smoke
+        run: npm run smoke
+
+      - name: Publish-base build
+        env:
+          VITE_BASE_PATH: /AGENTROPOLIS-WORLD/
+        run: npm run build
+
+      - name: Prove publish-base output
+        run: REQUIRE_DIST=1 npm test
+
+      - name: Headless smoke of publish-base output
+        run: npm run smoke
