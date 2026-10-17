@@ -92,7 +92,7 @@ function startStatic(dir, basePath) {
 }
 
 function launchChrome(binary, args) {
-  const chrome = spawn(binary, args, { stdio: ["ignore", "pipe", "pipe"] });
+  const chrome = spawn(binary, args, { stdio: ["ignore", "pipe", "pipe"], detached: true });
   let buffered = "";
   const port = new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
@@ -114,6 +114,44 @@ function launchChrome(binary, args) {
     });
   });
   return { chrome, port, output: () => buffered };
+}
+
+async function stopChrome(chrome) {
+  if (!chrome?.pid) return;
+  const pid = chrome.pid;
+  await new Promise((resolve) => {
+    if (chrome.exitCode !== null || chrome.signalCode !== null) {
+      resolve();
+      return;
+    }
+    const timer = setTimeout(resolve, 3000);
+    chrome.once("exit", () => {
+      clearTimeout(timer);
+      resolve();
+    });
+    try {
+      process.kill(-pid, "SIGKILL");
+    } catch {
+      try {
+        chrome.kill("SIGKILL");
+      } catch {
+        // The process already exited.
+      }
+    }
+  });
+  try {
+    process.kill(-pid, "SIGKILL");
+  } catch {
+    // The process group is already gone.
+  }
+}
+
+async function removeProfile(dir) {
+  try {
+    await rm(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
+  } catch (error) {
+    console.log(`temp profile cleanup skipped: ${error.message}`);
+  }
 }
 
 function connectCdp(wsUrl) {
@@ -180,6 +218,8 @@ test("built page loads the local baseline and does not call the remote script", 
     "--no-default-browser-check",
     "--disable-dev-shm-usage",
     "--disable-background-networking",
+    "--disable-breakpad",
+    "--disable-crash-reporter",
     "--disable-sync",
     "--remote-debugging-port=0",
     `--user-data-dir=${userData}`,
@@ -190,7 +230,7 @@ test("built page loads the local baseline and does not call the remote script", 
   try {
     debugPort = await launched.port;
   } catch (error) {
-    launched.chrome.kill("SIGKILL");
+    await stopChrome(launched.chrome);
     launched = launchChrome(binary, ["--no-sandbox", "--disable-setuid-sandbox", ...chromeArgs]);
     debugPort = await launched.port;
     if (!debugPort) throw error;
@@ -312,19 +352,8 @@ test("built page loads the local baseline and does not call the remote script", 
     } catch {
       // The socket may already be closed after the page session ends.
     }
-    await new Promise((resolve) => {
-      if (launched.chrome.exitCode !== null || launched.chrome.signalCode !== null) {
-        resolve();
-        return;
-      }
-      const timer = setTimeout(resolve, 3000);
-      launched.chrome.once("exit", () => {
-        clearTimeout(timer);
-        resolve();
-      });
-      launched.chrome.kill("SIGKILL");
-    });
+    await stopChrome(launched.chrome);
     await new Promise((resolve) => server.close(resolve));
-    await rm(userData, { recursive: true, force: true });
+    await removeProfile(userData);
   }
 });
