@@ -6,8 +6,9 @@
  * vendored copy's git blob SHA-1 or SHA-256 drifts from the pinned bytes.
  *
  * Set REQUIRE_DIST=1 after `npm run build` to also require dist/index.html
- * to reference a local file whose bytes match the pin. Optional DIST_DIR
- * overrides the build output directory (default: dist).
+ * to reference a local file whose bytes match the pin, and to require the
+ * pinned Subresource Integrity attribute on that script tag. Optional
+ * DIST_DIR overrides the build output directory (default: dist).
  */
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
@@ -22,6 +23,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const PINNED_BLOB_SHA = "15254b442f33e009f4c78a1c19568e75ea2121b2";
 /** SHA-256 of those same bytes. */
 const PINNED_SHA256 = "df28604ae9462594df48aa6fa05d9a77a3ca02e2f74c29aa3ba264da6e4d7224";
+/** SHA-384 SRI of those same bytes. Same-origin Chrome enforces this without crossorigin. */
+const PINNED_INTEGRITY = "sha384-YXPNohgGheUM32mm6qMBBKuRXhwU5Wkrwu9dgTmQBJRRIY0TdgcgxoEtvhxgTaqY";
 
 const VENDORED = [
   "agentropolis-loop-baseline.js",
@@ -34,6 +37,23 @@ const SCRIPT_SRC = /<script\b[^>]*?\bsrc\s*=\s*(['"])(.*?)\1/gis;
 
 function sha256(buf) {
   return createHash("sha256").update(buf).digest("hex");
+}
+
+function sriSha384(buf) {
+  return `sha384-${createHash("sha384").update(buf).digest("base64")}`;
+}
+
+function attrValue(tag, name) {
+  const matched = tag.match(new RegExp(`\\b${name}\\s*=\\s*(['"])(.*?)\\1`, "i"));
+  return matched ? matched[2] : null;
+}
+
+function baselineTag(html) {
+  const tags = [...html.matchAll(/<script\b[^>]*>/gis)]
+    .map((match) => match[0])
+    .filter((tag) => attrValue(tag, "src")?.includes("agentropolis-loop-baseline.js"));
+  assert.equal(tags.length, 1);
+  return tags[0];
 }
 
 function gitBlobSha(buf) {
@@ -105,7 +125,12 @@ test("no HTML script src is remote", () => {
 
 test("source index references the local baseline", () => {
   const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
-  assert.match(html, /<script\s+src="\.\/agentropolis-loop-baseline\.js"\s+defer><\/script>/);
+  const tag = baselineTag(html);
+  assert.equal(attrValue(tag, "src"), "./agentropolis-loop-baseline.js");
+  assert.match(tag, /\bdefer\b/);
+  assert.equal(attrValue(tag, "integrity"), PINNED_INTEGRITY);
+  const buf = fs.readFileSync(path.join(root, "agentropolis-loop-baseline.js"));
+  assert.equal(sriSha384(buf), PINNED_INTEGRITY);
 });
 
 test("build output serves the pinned baseline at the HTML path", (t) => {
@@ -116,6 +141,12 @@ test("build output serves the pinned baseline at the HTML path", (t) => {
   const dist = path.resolve(root, process.env.DIST_DIR || "dist");
   const htmlPath = path.join(dist, "index.html");
   const html = fs.readFileSync(htmlPath, "utf8");
+  const tag = baselineTag(html);
+  assert.equal(
+    attrValue(tag, "integrity"),
+    PINNED_INTEGRITY,
+    "integrity attribute must survive into dist/index.html",
+  );
   assert.equal(html.includes(BANNED_REMOTE_SCRIPT), false);
   const srcs = [...html.matchAll(SCRIPT_SRC)].map((match) => match[2].trim());
   for (const src of srcs) {
@@ -130,4 +161,5 @@ test("build output serves the pinned baseline at the HTML path", (t) => {
   const buf = fs.readFileSync(file);
   assert.equal(gitBlobSha(buf), PINNED_BLOB_SHA);
   assert.equal(sha256(buf), PINNED_SHA256);
+  assert.equal(sriSha384(buf), PINNED_INTEGRITY);
 });
