@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "node --test tests/vendored-baseline.test.mjs",
+    "smoke": "node --test tests/smoke-local-baseline.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.6",
