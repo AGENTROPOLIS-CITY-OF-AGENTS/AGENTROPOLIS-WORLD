@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""HUMAN FORGE actor builder (original code, MIT-0 by GROK-02 for Neuro / AGENTROPOLIS).
+"""HUMAN FORGE actor builder (original code).
+
+Copyright © 2026 NEURO / AGENTROPOLIS. All rights reserved.
+This file intentionally carries no open-source license.
+No license to reproduce, modify, redistribute, sublicense, or commercially
+exploit this file is granted unless expressly authorized in writing.
 
 Builds a skinned, morph-target glTF 2.0 binary (GLB) human actor from CC0
 MakeHuman 1.1 assets (base mesh hm08, default 163-bone skeleton, CC0 weights,

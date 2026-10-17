@@ -1,4 +1,6 @@
-// HUMAN FORGE LOD generator (original, MIT-0). Input: build/hf-actor-raw.glb
+// HUMAN FORGE LOD generator (original code). Copyright © 2026 NEURO / AGENTROPOLIS. All rights reserved.
+// No open-source license. No license to reproduce, modify, redistribute, sublicense, or commercially exploit this file unless expressly authorized in writing.
+// Input: build/hf-actor-raw.glb
 // Optional regenerator. Not a runtime dependency of AGENTROPOLIS-WORLD.
 // Requires @gltf-transform/functions and meshoptimizer, which are not installed by this repo.
 import { NodeIO } from '@gltf-transform/core';

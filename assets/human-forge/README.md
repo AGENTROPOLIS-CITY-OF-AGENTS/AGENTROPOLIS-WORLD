@@ -1,6 +1,6 @@
 # HUMAN FORGE · hf-actor-0001 in AGENTROPOLIS-WORLD
 
-This folder is the GROK-02 human-actor prototype, landed beside the city. The original standalone report is kept below, unchanged. Paths in that report are the standalone layout. In this repository they map as follows.
+This folder is the GROK-02 human-actor prototype, landed beside the city. The original standalone report is kept below. Two sentences in it were corrected on review: original pipeline, component, and docs code is all rights reserved, and the Khronos validator counts match `evidence/gltf-validator.json`. Paths in that report are the standalone layout. In this repository they map as follows.
 
 | Standalone path | This repo |
 | --- | --- |
@@ -24,7 +24,7 @@ The city view stays the default.
 
 ## License boundary
 
-MakeHuman inputs in `LICENSES/PROVENANCE.md` are CC0 1.0. This repository's own notice remains all rights reserved (root README). The report below proposes MIT-0 for original GROK-02 code. That proposal was **not** adopted on landing. No MakeHuman AGPL program code is included.
+MakeHuman inputs in `LICENSES/PROVENANCE.md` are CC0 1.0. Original pipeline, component, and docs code in this folder follows the repository notice: this work intentionally contains **no open-source license**. Copyright © 2026 NEURO / AGENTROPOLIS. All rights reserved. It is publicly viewable for demonstration, research, and interoperability purposes. No license to reproduce, modify, redistribute, sublicense, or commercially exploit that original work is granted unless expressly authorized in writing. No MakeHuman AGPL program code is included.
 
 ## Checks from this repo
 
@@ -88,14 +88,14 @@ To integrate into AGENTROPOLIS-WORLD: copy `src/components/actors/*` and `public
 | Skeleton `default.mhskel` | same repo, `makehuman/data/rigs/` | MakeHuman team | CC0 | 2026-10-16 |
 | Weights `default_weights.mhw` | same repo, `makehuman/data/rigs/` | Data Collection AB et al. | CC0 | 2026-10-16 |
 | Face pose units `face-poseunits.bvh/.json` | same repo, `makehuman/data/poseunits/` | Data Collection AB et al. | CC0 | 2026-10-16 |
-| Pipeline, component, materials, LODs, tests | original (GROK-02) | — | MIT-0 proposed | — |
+| Pipeline, component, materials, LODs, tests | original (GROK-02) | NEURO / AGENTROPOLIS | All rights reserved. No open-source license. | — |
 No purchases. No accounts. No real-person likeness or scans. No MakeHuman AGPL code is shipped. No Mixamo, RPM or MetaHuman content. SHA-256 hashes are in `evidence/sha256.txt`.
 
 ## 4. Verification evidence (everything here was actually run)
 | Check | Result | Evidence |
 |---|---|---|
 | GLB build | exit 0 | `evidence/build-actor.log`, `evidence/lod-report.json` |
-| Khronos glTF-Validator 2.0.0-dev.3.10 | **0 errors** on all 3 LODs. 1 warning each (TEXCOORD_0 unused: UVs kept for future skin textures). Info: skinned mesh node is not root (harmless in three.js) | `evidence/gltf-validator.json`, `validate.log` |
+| Khronos glTF-Validator 2.0.0-dev.3.10 | **0 errors** on all 3 LODs. 1 warning each: `NODE_SKINNED_MESH_NON_ROOT` (skinned mesh node is not root; parent transforms will not affect a skinned mesh; harmless in three.js). 5 infos each: `UNUSED_OBJECT` on unused `TEXCOORD_0` (UVs kept for future skin textures). | `evidence/gltf-validator.json`, `validate.log` |
 | Contract tests | **23/23 PASS**: 1 skin, 163 joints, key joints, actor identity extras, height and floor, identical joint order across LODs, 59 named morphs on LOD0/1, JawDrop moves face verts 5–40 mm and nothing below 1.3 m | `evidence/glb-contract-test.txt`, `contract.log` |
 | TypeScript + Vite production build | `tsc --noEmit` clean, vite build exit 0 (1.26 MB JS chunk warning) | `evidence/tsc-vite-build.log` |
 | Headless WebGL render (Chrome + SwiftShader, three r179) | 8 shots. In each, the R3F app reported 59 morphs loaded. Page console errors: none, except one 404 on the first page load only, probably favicon.ico (not confirmed) | `evidence/render-report.json`, `evidence/screenshots/*.png` |
